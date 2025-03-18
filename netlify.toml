@@ -1,3 +1,0 @@
-[build]
-publish = "build"  # Change to your actual build folder
-command = "npm run build"
