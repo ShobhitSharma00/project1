@@ -68,12 +68,21 @@ module.exports.validateReview = (req, res, next) => {
 
 
 module.exports.isReviewAuthor = async (req, res, next) => {
-  let {id, reviewId } = req.params;
-  let review = await Review.findById(reviewId).populate('owner');
-  if (!review.author.equals(req.locals.currUser._id)) {
-    req.flash("error", "You dit not the create this review");
-    return res.redirect(`/listings/${reviewId}`);
+  let { id, reviewId } = req.params;
+
+  // ✅ Find the review and populate the author field
+  let review = await Review.findById(reviewId).populate('author');
+
+  if (!review) {
+    req.flash("error", "Review not found");
+    return res.redirect(`/listings/${id}`);
   }
-  
+
+  // ✅ Check if the current user is the author
+  if (!review.author._id.equals(req.user._id)) {
+    req.flash("error", "You did not create this review");
+    return res.redirect(`/listings/${id}`);
+  }
+
   next();
 };

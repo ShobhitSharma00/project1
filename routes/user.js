@@ -6,7 +6,8 @@ const passport=require("passport");
 const { saveRedirectUrl } = require("../middleware");
 
 
-const userController=require("../Controllers/user")
+const userController = require("../controllers/user");
+
 
 router.route("/signup")
   .get(userController.renderSignupForm) // Show signup form

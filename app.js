@@ -45,7 +45,7 @@ const store = MongoStore.create({
   crypto: { secret: process.env.SECRET },
   touchAfter: 24 * 3600,
 });
-store.on("error", (err) => console.log("ERROR IN MONGO SESSION STORE", err));
+store.on("error", () => console.log("ERROR IN MONGO SESSION STORE", err));
 
 const sessionOptions = {
   store,
@@ -93,3 +93,14 @@ app.use((err, req, res, next) => {
 app.listen(8080, () => {
   console.log("Server is listening on port 8080");
 });
+
+app.get("/test-login", async (req, res) => {
+  const user = await User.findOne({ username: "_shobhitshrma_" });
+  if (!user) return res.send("User not found");
+
+  req.login(user, (err) => {
+    if (err) return res.send("Error logging in: " + err.message);
+    return res.send("Login successful: " + JSON.stringify(req.user));
+  });
+});
+

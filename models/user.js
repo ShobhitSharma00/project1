@@ -6,11 +6,15 @@ const userSchema = new Schema({
     email: {
         type: String,
         required: true,
-        unique: true // Ensures no duplicate emails
+        unique: true
+    },
+    username: {
+        type: String,
+        required: true,
+        unique: true
     }
 });
 
-// ✅ This will add `.authenticate()`, `.register()`, `.serializeUser()`, and `.deserializeUser()`
-userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(passportLocalMongoose, { usernameField: "email" });
 
 module.exports = mongoose.model("User", userSchema);
