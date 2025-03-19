@@ -11,8 +11,9 @@ const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
       folder: 'WANDERLUST_DEV',
-      allowedFormat: ["png","jpg","jpeg"],
-      public_id: (req, file) => 'computed-filename-using-request',
+      allowedFormats: ["png","jpg","jpeg"],
+      public_id: (req, file) => file.originalname.split('.')[0] + "-" + Date.now(),
+
     },
   });
 
